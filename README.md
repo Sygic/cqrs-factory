@@ -1,2 +1,2 @@
-# cqrs-factory
+# CQRS factories
 CQRS factories for container-interop
