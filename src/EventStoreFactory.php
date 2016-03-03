@@ -68,7 +68,7 @@ class EventStoreFactory extends AbstractFactory
     protected function getDefaultConfig()
     {
         return [
-            'class' => [],
+            'class' => MemoryEventStore::class,
             'event_store' => '',
             'event_stores' => [],
             'event_filter' => 'cqrs_default',
