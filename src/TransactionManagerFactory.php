@@ -3,8 +3,8 @@
 namespace CQRSFactory;
 
 use CQRS\CommandHandling\TransactionManager\NoTransactionManager;
-use CQRSTest\Plugin\Doctrine\CommandHandling\ExplicitOrmTransactionManagerTest;
-use CQRSTest\Plugin\Doctrine\CommandHandling\ImplicitOrmTransactionManagerTest;
+use CQRS\Plugin\Doctrine\CommandHandling\ExplicitOrmTransactionManager;
+use CQRS\Plugin\Doctrine\CommandHandling\ImplicitOrmTransactionManager;
 use Interop\Container\ContainerInterface;
 
 class TransactionManagerFactory extends AbstractFactory
@@ -17,8 +17,8 @@ class TransactionManagerFactory extends AbstractFactory
         $config = $this->retrieveConfig($container, $configKey, 'transaction_manager');
 
         switch ($config['class']) {
-            case ExplicitOrmTransactionManagerTest::class:
-            case ImplicitOrmTransactionManagerTest::class:
+            case ExplicitOrmTransactionManager::class:
+            case ImplicitOrmTransactionManager::class:
                 $entityManager = is_string($config['connection'])
                     ? $container->get($config['connection'])
                     : $config['connection'];
