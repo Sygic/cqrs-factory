@@ -88,7 +88,7 @@ abstract class AbstractFactory
         $sectionConfig = array_key_exists($section, $cqrsConfig) ? $cqrsConfig[$section] : [];
         $config = array_key_exists($configKey, $sectionConfig) ? $sectionConfig[$configKey] : [];
 
-        return array_merge_recursive(
+        return array_merge(
             $this->getDefaultConfig(),
             $config
         );
