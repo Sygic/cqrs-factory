@@ -40,7 +40,7 @@ class EventPublisherFactory extends AbstractFactory
         );
 
         if ($eventPublisher instanceof DoctrineEventPublisher) {
-            $container->get($config['eventy_manager'])
+            $container->get($config['entity_manager'])
                 ->getEventManager()
                 ->addEventSubscriber($eventPublisher);
         }
