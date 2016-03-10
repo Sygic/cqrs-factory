@@ -34,7 +34,7 @@ class IdentityMapFactory extends AbstractFactory
     {
         return [
             'class' => SimpleIdentityMap::class,
-            'entity_manager' => 'doctrine.entitymanager.orm_default',
+            'entity_manager' => 'doctrine.entity_manager.orm_default',
         ];
     }
 }
