@@ -18,7 +18,7 @@ class CommandBusFactory extends AbstractFactory
      * @return CommandBusInterface
      * @throws InvalidArgumentException
      */
-    protected function createWithConfig(ContainerInterface $container, $configKey)
+    protected function createWithConfig(ContainerInterface $container, string $configKey): CommandBusInterface
     {
         $config = $this->retrieveConfig($container, $configKey, 'command_bus');
 
@@ -51,7 +51,7 @@ class CommandBusFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultConfig()
+    protected function getDefaultConfig(): array
     {
         return [
             'class' => SequentialCommandBus::class,

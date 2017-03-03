@@ -14,7 +14,7 @@ abstract class AbstractFactory
     /**
      * @param string $configKey
      */
-    public function __construct($configKey = 'cqrs_default')
+    public function __construct(string $configKey = 'cqrs_default')
     {
         $this->configKey = $configKey;
     }
@@ -64,14 +64,14 @@ abstract class AbstractFactory
      * @param string $configKey
      * @return mixed
      */
-    abstract protected function createWithConfig(ContainerInterface $container, $configKey);
+    abstract protected function createWithConfig(ContainerInterface $container, string $configKey);
 
     /**
      * Returns the default config.
      *
      * @return array
      */
-    abstract protected function getDefaultConfig();
+    abstract protected function getDefaultConfig(): array;
 
     /**
      * Retrieves the config for a specific section.
@@ -81,12 +81,10 @@ abstract class AbstractFactory
      * @param string $section
      * @return array
      */
-    protected function retrieveConfig(ContainerInterface $container, $configKey, $section)
+    protected function retrieveConfig(ContainerInterface $container, string $configKey, string $section): array
     {
         $applicationConfig = $container->has('config') ? $container->get('config') : [];
-        $cqrsConfig = array_key_exists('cqrs', $applicationConfig) ? $applicationConfig['cqrs'] : [];
-        $sectionConfig = array_key_exists($section, $cqrsConfig) ? $cqrsConfig[$section] : [];
-        $config = array_key_exists($configKey, $sectionConfig) ? $sectionConfig[$configKey] : [];
+        $config = $applicationConfig['cqrs'][$section][$configKey] ?? [];
 
         return array_merge(
             $this->getDefaultConfig(),
@@ -106,8 +104,12 @@ abstract class AbstractFactory
      * @param string $factoryClassName
      * @return mixed
      */
-    protected function retrieveDependency(ContainerInterface $container, $configKey, $section, $factoryClassName)
-    {
+    protected function retrieveDependency(
+        ContainerInterface $container,
+        string $configKey,
+        string $section,
+        string $factoryClassName
+    ) {
         $containerKey = sprintf('cqrs.%s.%s', $section, $configKey);
 
         if ($container->has($containerKey)) {

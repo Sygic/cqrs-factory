@@ -3,6 +3,7 @@
 namespace CQRSFactory;
 
 use CQRS\CommandHandling\TransactionManager\NoTransactionManager;
+use CQRS\CommandHandling\TransactionManager\TransactionManagerInterface;
 use CQRS\Plugin\Doctrine\CommandHandling\ExplicitOrmTransactionManager;
 use CQRS\Plugin\Doctrine\CommandHandling\ImplicitOrmTransactionManager;
 use Interop\Container\ContainerInterface;
@@ -12,7 +13,7 @@ class TransactionManagerFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    public function createWithConfig(ContainerInterface $container, $configKey)
+    public function createWithConfig(ContainerInterface $container, string $configKey): TransactionManagerInterface
     {
         $config = $this->retrieveConfig($container, $configKey, 'transaction_manager');
 
@@ -32,7 +33,7 @@ class TransactionManagerFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultConfig()
+    protected function getDefaultConfig(): array
     {
         return [
             'class' => NoTransactionManager::class,

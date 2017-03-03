@@ -14,7 +14,7 @@ class IdentityMapFactory extends AbstractFactory
      * @param string $configKey
      * @return IdentityMapInterface
      */
-    protected function createWithConfig(ContainerInterface $container, $configKey)
+    protected function createWithConfig(ContainerInterface $container, string $configKey): IdentityMapInterface
     {
         $config = $this->retrieveConfig($container, $configKey, 'identity_map');
 
@@ -30,7 +30,7 @@ class IdentityMapFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultConfig()
+    protected function getDefaultConfig(): array
     {
         return [
             'class' => SimpleIdentityMap::class,

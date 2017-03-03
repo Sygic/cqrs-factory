@@ -3,6 +3,7 @@
 namespace CQRSFactory;
 
 use CQRS\EventHandling\Publisher\DomainEventQueue;
+use CQRS\EventHandling\Publisher\EventPublisherInterface;
 use CQRS\EventHandling\Publisher\SimpleEventPublisher;
 use CQRS\Plugin\Doctrine\EventHandling\Publisher\DoctrineEventPublisher;
 use Interop\Container\ContainerInterface;
@@ -12,7 +13,7 @@ class EventPublisherFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    public function createWithConfig(ContainerInterface $container, $configKey)
+    public function createWithConfig(ContainerInterface $container, string $configKey): EventPublisherInterface
     {
         $config = $this->retrieveConfig($container, $configKey, 'event_publisher');
 
@@ -51,7 +52,7 @@ class EventPublisherFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultConfig()
+    protected function getDefaultConfig(): array
     {
         return [
             'class' => SimpleEventPublisher::class,
