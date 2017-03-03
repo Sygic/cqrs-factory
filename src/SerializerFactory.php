@@ -13,7 +13,7 @@ class SerializerFactory extends AbstractFactory
      * @param string $configKey
      * @return SerializerInterface
      */
-    protected function createWithConfig(ContainerInterface $container, $configKey)
+    protected function createWithConfig(ContainerInterface $container, string $configKey): SerializerInterface
     {
         $config = $this->retrieveConfig($container, $configKey, 'serializer');
 
@@ -27,7 +27,7 @@ class SerializerFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultConfig()
+    protected function getDefaultConfig(): array
     {
         return [
             'class' => JsonSerializer::class,

@@ -18,7 +18,7 @@ class EventBusFactory extends AbstractFactory
      * @return EventBusInterface
      * @throws InvalidArgumentException
      */
-    protected function createWithConfig(ContainerInterface $container, $configKey)
+    protected function createWithConfig(ContainerInterface $container, string $configKey): EventBusInterface
     {
         $config = $this->retrieveConfig($container, $configKey, 'event_bus');
 
@@ -39,7 +39,7 @@ class EventBusFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultConfig()
+    protected function getDefaultConfig(): array
     {
         return [
             'class' => SynchronousEventBus::class,
