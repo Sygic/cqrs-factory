@@ -30,14 +30,13 @@ class SerializerFactory extends AbstractFactory
                 $dictionary
 
             );
-        } else {
-
-            return new $config['class'](
-                is_string($config['instance'])
-                    ? $container->get($config['instance'])
-                    : $config['instance']
-            );
         }
+
+        return new $config['class'](
+            is_string($config['instance'])
+                ? $container->get($config['instance'])
+                : $config['instance']
+        );
     }
 
     /**
