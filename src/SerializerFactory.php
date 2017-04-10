@@ -19,7 +19,6 @@ class SerializerFactory extends AbstractFactory
         $config = $this->retrieveConfig($container, $configKey, 'serializer');
 
         if ($config['class'] === HybridSerializer::class) {
-
             $dictionary = $config['event_type_map'] ?: [];
 
             /** @var JsonSerializer $jsonSerializer */
