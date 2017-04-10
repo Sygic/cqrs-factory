@@ -15,7 +15,7 @@ class EventStoreFactory extends AbstractFactory
      * @param string $configKey
      * @return EventStoreInterface
      */
-    protected function createWithConfig(ContainerInterface $container, $configKey)
+    protected function createWithConfig(ContainerInterface $container, string $configKey): EventStoreInterface
     {
         $config = $this->retrieveConfig($container, $configKey, 'event_store');
 
@@ -65,7 +65,7 @@ class EventStoreFactory extends AbstractFactory
     /**
      * {@inheritdoc}
      */
-    protected function getDefaultConfig()
+    protected function getDefaultConfig(): array
     {
         return [
             'class' => MemoryEventStore::class,
