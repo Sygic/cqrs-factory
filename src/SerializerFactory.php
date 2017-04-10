@@ -2,6 +2,7 @@
 
 namespace CQRSFactory;
 
+use CQRS\Serializer\HybridSerializer;
 use CQRS\Serializer\JsonSerializer;
 use CQRS\Serializer\SerializerInterface;
 use Interop\Container\ContainerInterface;
@@ -16,6 +17,19 @@ class SerializerFactory extends AbstractFactory
     protected function createWithConfig(ContainerInterface $container, string $configKey): SerializerInterface
     {
         $config = $this->retrieveConfig($container, $configKey, 'serializer');
+
+        if ($config['class'] === HybridSerializer::class) {
+            $dictionary = $config['event_type_map'] ?: [];
+
+            /** @var JsonSerializer $jsonSerializer */
+            $jsonSerializer = new JsonSerializer();
+
+            return new $config['class'](
+                $jsonSerializer,
+                $dictionary
+
+            );
+        }
 
         return new $config['class'](
             is_string($config['instance'])

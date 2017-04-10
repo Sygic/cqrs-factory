@@ -62,5 +62,9 @@ return [
                 //'instance' => 'my_serializer_alias',
             ],
         ],
+
+        'event_type_map' => [
+            'App\Model\Entity\Event\OriginalEvent' => CQRSFactory\Event\RenamedEvent::class,
+        ],
     ],
 ];
