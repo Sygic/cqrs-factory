@@ -8,7 +8,7 @@ use CQRS\EventHandling\Exception\InvalidArgumentException;
 use CQRS\EventHandling\SynchronousEventBus;
 use CQRS\HandlerResolver\ContainerHandlerResolver;
 use CQRS\HandlerResolver\EventHandlerResolver;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class EventBusFactory extends AbstractFactory
 {

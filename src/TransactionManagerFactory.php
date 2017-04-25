@@ -6,7 +6,7 @@ use CQRS\CommandHandling\TransactionManager\NoTransactionManager;
 use CQRS\CommandHandling\TransactionManager\TransactionManagerInterface;
 use CQRS\Plugin\Doctrine\CommandHandling\ExplicitOrmTransactionManager;
 use CQRS\Plugin\Doctrine\CommandHandling\ImplicitOrmTransactionManager;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class TransactionManagerFactory extends AbstractFactory
 {

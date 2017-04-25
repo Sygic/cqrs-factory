@@ -6,7 +6,7 @@ use CQRS\EventStore\ChainingEventStore;
 use CQRS\EventStore\EventStoreInterface;
 use CQRS\EventStore\FilteringEventStore;
 use CQRS\EventStore\MemoryEventStore;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class EventStoreFactory extends AbstractFactory
 {

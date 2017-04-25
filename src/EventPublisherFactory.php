@@ -6,7 +6,7 @@ use CQRS\EventHandling\Publisher\DomainEventQueue;
 use CQRS\EventHandling\Publisher\EventPublisherInterface;
 use CQRS\EventHandling\Publisher\SimpleEventPublisher;
 use CQRS\Plugin\Doctrine\EventHandling\Publisher\DoctrineEventPublisher;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class EventPublisherFactory extends AbstractFactory
 {

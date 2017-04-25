@@ -5,7 +5,7 @@ namespace CQRSFactory;
 use CQRS\EventHandling\Publisher\IdentityMapInterface;
 use CQRS\EventHandling\Publisher\SimpleIdentityMap;
 use CQRS\Plugin\Doctrine\EventHandling\Publisher\DoctrineIdentityMap;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class IdentityMapFactory extends AbstractFactory
 {

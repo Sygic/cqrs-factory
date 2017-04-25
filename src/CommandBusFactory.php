@@ -8,7 +8,7 @@ use CQRS\CommandHandling\Exception\InvalidArgumentException;
 use CQRS\CommandHandling\SequentialCommandBus;
 use CQRS\HandlerResolver\CommandHandlerResolver;
 use CQRS\HandlerResolver\ContainerHandlerResolver;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class CommandBusFactory extends AbstractFactory
 {

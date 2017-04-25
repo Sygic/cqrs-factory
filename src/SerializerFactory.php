@@ -5,7 +5,7 @@ namespace CQRSFactory;
 use CQRS\Serializer\HybridSerializer;
 use CQRS\Serializer\JsonSerializer;
 use CQRS\Serializer\SerializerInterface;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class SerializerFactory extends AbstractFactory
 {
