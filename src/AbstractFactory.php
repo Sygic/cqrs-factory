@@ -47,7 +47,7 @@ abstract class AbstractFactory
      */
     public static function __callStatic($name, array $arguments)
     {
-        if (!array_key_exists(0, $arguments) || $arguments[0] instanceof ContainerInterface) {
+        if (!array_key_exists(0, $arguments) || !$arguments[0] instanceof ContainerInterface) {
             throw new Exception\DomainException(sprintf(
                 'The first argument must be of type %s',
                 ContainerInterface::class
