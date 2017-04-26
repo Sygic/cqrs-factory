@@ -54,7 +54,7 @@ abstract class AbstractFactory
             ));
         }
 
-        return (new static($name))->__invoke($arguments[0]);
+        return (new static($name))($arguments[0]);
     }
 
     /**
@@ -116,6 +116,6 @@ abstract class AbstractFactory
             return $container->get($containerKey);
         }
 
-        return (new $factoryClassName($configKey))->__invoke($container);
+        return (new $factoryClassName($configKey))($container);
     }
 }
