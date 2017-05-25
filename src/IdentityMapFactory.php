@@ -4,7 +4,6 @@ namespace CQRSFactory;
 
 use CQRS\EventHandling\Publisher\IdentityMapInterface;
 use CQRS\EventHandling\Publisher\SimpleIdentityMap;
-use CQRS\Plugin\Doctrine\EventHandling\Publisher\DoctrineIdentityMap;
 use Psr\Container\ContainerInterface;
 
 class IdentityMapFactory extends AbstractFactory
@@ -18,12 +17,6 @@ class IdentityMapFactory extends AbstractFactory
     {
         $config = $this->retrieveConfig($container, $configKey, 'identity_map');
 
-        if ($config['class'] === DoctrineIdentityMap::class) {
-            return new DoctrineIdentityMap(
-                $container->get($config['entity_manager'])
-            );
-        }
-
         return new $config['class'];
     }
 
@@ -34,7 +27,6 @@ class IdentityMapFactory extends AbstractFactory
     {
         return [
             'class' => SimpleIdentityMap::class,
-            'entity_manager' => 'doctrine.entity_manager.orm_default',
         ];
     }
 }
