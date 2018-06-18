@@ -4,6 +4,8 @@ namespace CQRSFactory;
 
 use CQRS\EventHandling\Publisher\IdentityMapInterface;
 use CQRS\EventHandling\Publisher\SimpleIdentityMap;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
 class IdentityMapFactory extends AbstractFactory
@@ -17,7 +19,16 @@ class IdentityMapFactory extends AbstractFactory
     {
         $config = $this->retrieveConfig($container, $configKey, 'identity_map');
 
-        return new $config['class'];
+        $identityMap = new $config['class'];
+
+        if ($identityMap instanceof EventSubscriber) {
+            /** @var EntityManagerInterface $entityManager */
+            $entityManager = $container->get($config['entity_manager']);
+            $entityManager->getEventManager()
+                ->addEventSubscriber($identityMap);
+        }
+
+        return $identityMap;
     }
 
     /**
@@ -27,6 +38,7 @@ class IdentityMapFactory extends AbstractFactory
     {
         return [
             'class' => SimpleIdentityMap::class,
+            'entity_manager' => 'doctrine.entity_manager.orm_default',
         ];
     }
 }

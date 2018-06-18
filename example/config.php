@@ -24,6 +24,7 @@ return [
                 'event_bus' => 'cqrs_default',
                 'identity_map' => 'cqrs_default',
                 'event_store' => 'cqrs_default',
+                'entity_manager' => 'doctrine.entity_manager.orm_default',
             ],
         ],
 
@@ -44,6 +45,7 @@ return [
         'identity_map' => [
             'cqrs_default' => [
                 'class' => CQRS\Plugin\Doctrine\EventHandling\Publisher\DoctrineIdentityMap::class,
+                'entity_manager' => 'doctrine.entity_manager.orm_default'
             ],
         ],
 
@@ -63,17 +65,6 @@ return [
 
         'event_type_map' => [
             'App\Model\Entity\Event\OriginalEvent' => CQRSFactory\Event\RenamedEvent::class,
-        ],
-    ],
-
-    'doctrine' => [
-        'event_manager' => [
-            'orm_default' => [
-                'subscribers' => [
-                    'cqrs.event_publisher.cqrs_default',
-                    'cqrs.identity_map.cqrs_default',
-                ],
-            ],
         ],
     ],
 ];

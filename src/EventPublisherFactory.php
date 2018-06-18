@@ -5,6 +5,8 @@ namespace CQRSFactory;
 use CQRS\EventHandling\Publisher\DomainEventQueue;
 use CQRS\EventHandling\Publisher\EventPublisherInterface;
 use CQRS\EventHandling\Publisher\SimpleEventPublisher;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
 class EventPublisherFactory extends AbstractFactory
@@ -39,6 +41,13 @@ class EventPublisherFactory extends AbstractFactory
             )
         );
 
+        if ($eventPublisher instanceof EventSubscriber) {
+            /** @var EntityManagerInterface $entityManager */
+            $entityManager = $container->get($config['entity_manager']);
+            $entityManager->getEventManager()
+                ->addEventSubscriber($eventPublisher);
+        }
+
         return $eventPublisher;
     }
 
@@ -52,6 +61,7 @@ class EventPublisherFactory extends AbstractFactory
             'event_bus' => 'cqrs_default',
             'identity_map' => 'cqrs_default',
             'event_store' => 'cqrs_default',
+            'entity_manager' => 'doctrine.entity_manager.orm_default',
         ];
     }
 }
