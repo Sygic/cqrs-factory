@@ -41,10 +41,7 @@ class CommandBusFactory extends AbstractFactory
                 $config['event_publisher'],
                 'event_publisher',
                 EventPublisherFactory::class
-            ),
-            is_string($config['logger'])
-                ? $container->get($config['logger'])
-                : $config['logger']
+            )
         );
     }
 
@@ -58,7 +55,6 @@ class CommandBusFactory extends AbstractFactory
             'handlers' => [],
             'transaction_manager' => 'cqrs_default',
             'event_publisher' => 'cqrs_default',
-            'logger' => null,
         ];
     }
 }

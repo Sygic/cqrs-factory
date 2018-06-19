@@ -14,7 +14,6 @@ return [
 
                 'transaction_manager' => 'cqrs_default',
                 'event_publisher' => 'cqrs_default',
-                'logger' => 'my_logger_alias',
             ],
         ],
 
@@ -37,8 +36,6 @@ return [
                     'EventTypeB' => 'my_event_handler_alias',
                     'EventTypeC' => ['my_event_handler_alias', 'methodName'],
                 ],
-
-                'logger' => 'my_logger_alias',
             ],
         ],
 

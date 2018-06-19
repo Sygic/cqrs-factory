@@ -29,10 +29,7 @@ class EventBusFactory extends AbstractFactory
                     $container,
                     new EventHandlerResolver()
                 )
-            ),
-            is_string($config['logger'])
-                ? $container->get($config['logger'])
-                : $config['logger']
+            )
         );
     }
 
@@ -44,7 +41,6 @@ class EventBusFactory extends AbstractFactory
         return [
             'class' => SynchronousEventBus::class,
             'handlers' => [],
-            'logger' => null,
         ];
     }
 }
