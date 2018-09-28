@@ -70,7 +70,7 @@ configurations, there are a few examples provided in the example directory:
 A complete example configuration can be found in [example/config.php](example/config.php).
 
 
-[badge-source]: https://img.shields.io/badge/source-pauci/cqrs-factory-blue.svg?style=flat-square
+[badge-source]: https://img.shields.io/badge/source-pauci/cqrs--factory-blue.svg?style=flat-square
 [badge-release]: https://img.shields.io/packagist/v/pauci/cqrs-factory.svg?style=flat-square
 [badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [badge-build]: https://img.shields.io/travis/pauci/cqrs-factory/master.svg?style=flat-square
