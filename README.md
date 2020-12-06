@@ -2,9 +2,9 @@
 
 [![Source Code][badge-source]][source]
 [![Latest Version][badge-release]][release]
-[![Software License][badge-license]][license]
 [![Build Status][badge-build]][build]
 [![Coverage Status][badge-coverage]][coverage]
+[![Software License][badge-license]][license]
 [![Total Downloads][badge-downloads]][downloads]
 
 
@@ -71,15 +71,15 @@ A complete example configuration can be found in [example/config.php](example/co
 
 
 [badge-source]: https://img.shields.io/badge/source-pauci/cqrs--factory-blue.svg?style=flat-square
-[badge-release]: https://img.shields.io/packagist/v/pauci/cqrs-factory.svg?style=flat-square
+[badge-release]: https://img.shields.io/packagist/v/pauci/cqrs-factory.svg?style=flat-square&label=release
+[badge-build]: https://img.shields.io/github/workflow/status/pauci/cqrs-factory/Continuous%20Integration?style=flat-square
+[badge-coverage]: https://img.shields.io/codecov/c/github/pauci/cqrs-factory?style=flat-square
 [badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[badge-build]: https://img.shields.io/travis/pauci/cqrs-factory/master.svg?style=flat-square
-[badge-coverage]: https://img.shields.io/coveralls/pauci/cqrs-factory/master.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/packagist/dt/pauci/cqrs-factory.svg?style=flat-square
 
 [source]: https://github.com/pauci/cqrs-factory
 [release]: https://packagist.org/packages/pauci/cqrs-factory
+[build]: https://github.com/pauci/cqrs-factory/actions?query=workflow%3A%22Continuous+Integration%22
+[coverage]: https://codecov.io/gh/pauci/cqrs-factory
 [license]: https://github.com/pauci/cqrs-factory/blob/master/LICENSE
-[build]: https://travis-ci.org/pauci/cqrs-factory
-[coverage]: https://coveralls.io/r/pauci/cqrs-factory?branch=master
 [downloads]: https://packagist.org/packages/pauci/cqrs-factory
