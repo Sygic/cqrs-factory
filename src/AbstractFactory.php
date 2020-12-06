@@ -4,16 +4,11 @@ namespace CQRSFactory;
 
 use Psr\Container\ContainerInterface;
 
+/** @internal */
 abstract class AbstractFactory
 {
-    /**
-     * @var string
-     */
-    private $configKey;
+    private string $configKey;
 
-    /**
-     * @param string $configKey
-     */
     public function __construct(string $configKey = 'cqrs_default')
     {
         $this->configKey = $configKey;
@@ -48,12 +43,13 @@ abstract class AbstractFactory
     public static function __callStatic(string $name, array $arguments)
     {
         if (!array_key_exists(0, $arguments) || !$arguments[0] instanceof ContainerInterface) {
-            throw new Exception\DomainException(sprintf(
+            throw new Exception\InvalidArgumentException(sprintf(
                 'The first argument must be of type %s',
                 ContainerInterface::class
             ));
         }
 
+        /** @phpstan-ignore-next-line */
         return (new static($name))($arguments[0]);
     }
 
@@ -68,18 +64,11 @@ abstract class AbstractFactory
 
     /**
      * Returns the default config.
-     *
-     * @return array
      */
     abstract protected function getDefaultConfig(): array;
 
     /**
      * Retrieves the config for a specific section.
-     *
-     * @param ContainerInterface $container
-     * @param string $configKey
-     * @param string $section
-     * @return array
      */
     protected function retrieveConfig(ContainerInterface $container, string $configKey, string $section): array
     {
