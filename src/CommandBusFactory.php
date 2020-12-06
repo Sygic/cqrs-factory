@@ -4,10 +4,10 @@ namespace CQRSFactory;
 
 use CQRS\CommandHandling\CommandBusInterface;
 use CQRS\CommandHandling\CommandHandlerLocator;
-use CQRS\CommandHandling\Exception\InvalidArgumentException;
 use CQRS\CommandHandling\SequentialCommandBus;
 use CQRS\HandlerResolver\CommandHandlerResolver;
 use CQRS\HandlerResolver\ContainerHandlerResolver;
+use CQRSFactory\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 
 class CommandBusFactory extends AbstractFactory

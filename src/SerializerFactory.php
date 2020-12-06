@@ -21,13 +21,11 @@ class SerializerFactory extends AbstractFactory
         if ($config['class'] === HybridSerializer::class) {
             $dictionary = $config['event_type_map'] ?: [];
 
-            /** @var JsonSerializer $jsonSerializer */
             $jsonSerializer = new JsonSerializer();
 
             return new $config['class'](
                 $jsonSerializer,
                 $dictionary
-
             );
         }
 
