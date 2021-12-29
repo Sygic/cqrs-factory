@@ -2,23 +2,27 @@
 
 namespace CQRSFactory;
 
+use CQRSFactory\Exception\DomainException;
 use Psr\Container\ContainerInterface;
 
-/** @internal */
+/**
+ * @phpstan-template T of object
+ * @internal
+ */
 abstract class AbstractFactory
 {
     private string $configKey;
 
-    public function __construct(string $configKey = 'cqrs_default')
+    /** @internal */
+    final public function __construct(string $configKey = 'cqrs_default')
     {
         $this->configKey = $configKey;
     }
 
     /**
-     * @param ContainerInterface $container
-     * @return mixed
+     * @phpstan-return T
      */
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): object
     {
         return $this->createWithConfig($container, $this->configKey);
     }
@@ -35,12 +39,10 @@ abstract class AbstractFactory
      * ];
      * </code>
      *
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
+     * @phpstan-return T
      * @throws Exception\DomainException
      */
-    public static function __callStatic(string $name, array $arguments)
+    public static function __callStatic(string $name, array $arguments): object
     {
         if (!array_key_exists(0, $arguments) || !$arguments[0] instanceof ContainerInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
@@ -49,36 +51,39 @@ abstract class AbstractFactory
             ));
         }
 
-        /** @phpstan-ignore-next-line */
         return (new static($name))($arguments[0]);
     }
 
     /**
      * Creates a new instance from a specified config.
      *
-     * @param ContainerInterface $container
-     * @param string $configKey
-     * @return mixed
+     * @phpstan-return T
      */
-    abstract protected function createWithConfig(ContainerInterface $container, string $configKey);
+    abstract protected function createWithConfig(ContainerInterface $container, string $configKey): object;
 
     /**
      * Returns the default config.
+     *
+     * @phpstan-return array<string, mixed>
      */
     abstract protected function getDefaultConfig(): array;
 
     /**
      * Retrieves the config for a specific section.
+     *
+     * @phpstan-return array<string, mixed>
      */
     protected function retrieveConfig(ContainerInterface $container, string $configKey, string $section): array
     {
+        /** @var array{cqrs?: array<string, array>} $applicationConfig */
         $applicationConfig = $container->has('config') ? $container->get('config') : [];
-        $config = $applicationConfig['cqrs'][$section][$configKey] ?? [];
+        $sectionConfig = $applicationConfig['cqrs'][$section] ?? [];
 
-        return array_merge(
-            $this->getDefaultConfig(),
-            $config
-        );
+        if (array_key_exists($configKey, $sectionConfig)) {
+            return $sectionConfig[$configKey] + $this->getDefaultConfig();
+        }
+
+        return $this->getDefaultConfig();
     }
 
     /**
@@ -87,24 +92,52 @@ abstract class AbstractFactory
      * If the container does not know about the dependency, it is pulled from a fresh factory. This saves the user from
      * registering factories which they are not gonna access themself at all, and thus minimized configuration.
      *
-     * @param ContainerInterface $container
-     * @param string $configKey
-     * @param string $section
-     * @param string $factoryClassName
-     * @return mixed
+     * @phpstan-template Dependency of object
+     * @phpstan-param class-string<AbstractFactory<Dependency>> $factoryClassName
+     * @phpstan-return Dependency
      */
     protected function retrieveDependency(
         ContainerInterface $container,
         string $configKey,
         string $section,
         string $factoryClassName
-    ) {
+    ): object {
         $containerKey = sprintf('cqrs.%s.%s', $section, $configKey);
 
         if ($container->has($containerKey)) {
+            /** @phpstan-ignore-next-line */
             return $container->get($containerKey);
         }
 
         return (new $factoryClassName($configKey))($container);
+    }
+
+    /**
+     * @phpstan-template Service of object
+     * @phpstan-param class-string<Service> $className
+     * @phpstan-return Service
+     */
+    protected function retrieveService(
+        ContainerInterface $container,
+        array $config,
+        string $key,
+        string $className
+    ): object {
+        $service = $config[$key] ?? null;
+
+        if (is_string($service)) {
+            $service = $container->get($service);
+        }
+
+        if (!$service instanceof $className) {
+            throw new DomainException(sprintf(
+                'Service "%s" must be an instance of %s, got %s',
+                $key,
+                $className,
+                get_debug_type($service)
+            ));
+        }
+
+        return $service;
     }
 }
