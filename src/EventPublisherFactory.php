@@ -9,13 +9,21 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @phpstan-type EventPublisherConfig array{
+ *     class: class-string<EventPublisherInterface>,
+ *     event_bus: string,
+ *     identity_map: string,
+ *     event_store: string,
+ *     entity_manager: string
+ * }
+ * @phpstan-extends AbstractFactory<EventPublisherInterface>
+ */
 class EventPublisherFactory extends AbstractFactory
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createWithConfig(ContainerInterface $container, string $configKey): EventPublisherInterface
     {
+        /** @var EventPublisherConfig $config */
         $config = $this->retrieveConfig($container, $configKey, 'event_publisher');
 
         $eventPublisher = new $config['class'](
@@ -42,8 +50,12 @@ class EventPublisherFactory extends AbstractFactory
         );
 
         if ($eventPublisher instanceof EventSubscriber) {
-            /** @var EntityManagerInterface $entityManager */
-            $entityManager = $container->get($config['entity_manager']);
+            $entityManager = $this->retrieveService(
+                $container,
+                $config,
+                'entity_manager',
+                EntityManagerInterface::class
+            );
             $entityManager->getEventManager()
                 ->addEventSubscriber($eventPublisher);
         }
@@ -52,7 +64,7 @@ class EventPublisherFactory extends AbstractFactory
     }
 
     /**
-     * {@inheritdoc}
+     * @phpstan-return EventPublisherConfig
      */
     protected function getDefaultConfig(): array
     {

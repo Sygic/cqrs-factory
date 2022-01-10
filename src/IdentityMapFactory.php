@@ -8,22 +8,27 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @phpstan-type IdentityMapConfig array{class: class-string<IdentityMapInterface>, entity_manager?: string}
+ * @phpstan-extends AbstractFactory<IdentityMapInterface>
+ */
 class IdentityMapFactory extends AbstractFactory
 {
-    /**
-     * @param ContainerInterface $container
-     * @param string $configKey
-     * @return IdentityMapInterface
-     */
     protected function createWithConfig(ContainerInterface $container, string $configKey): IdentityMapInterface
     {
+        /** @var IdentityMapConfig $config */
         $config = $this->retrieveConfig($container, $configKey, 'identity_map');
 
         $identityMap = new $config['class'];
 
         if ($identityMap instanceof EventSubscriber) {
-            /** @var EntityManagerInterface $entityManager */
-            $entityManager = $container->get($config['entity_manager']);
+            $entityManager = $this->retrieveService(
+                $container,
+                $config,
+                'entity_manager',
+                EntityManagerInterface::class
+            );
+
             $entityManager->getEventManager()
                 ->addEventSubscriber($identityMap);
         }
@@ -32,7 +37,7 @@ class IdentityMapFactory extends AbstractFactory
     }
 
     /**
-     * {@inheritdoc}
+     * @return IdentityMapConfig
      */
     protected function getDefaultConfig(): array
     {

@@ -2,48 +2,53 @@
 
 namespace CQRSFactory;
 
-use CQRS\Serializer\HybridSerializer;
-use CQRS\Serializer\JsonSerializer;
 use CQRS\Serializer\SerializerInterface;
+use CQRS\Serializer\SymfonySerializer;
+use CQRSFactory\Exception\DomainException;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 
+/**
+ * @phpstan-type SerializerConfig array{
+ *     class: class-string<SerializerInterface>,
+ *     instance?: class-string|object,
+ *     format?: string,
+ *     context?: array
+ * }
+ * @phpstan-extends AbstractFactory<SerializerInterface>
+ */
 class SerializerFactory extends AbstractFactory
 {
-    /**
-     * @param ContainerInterface $container
-     * @param string $configKey
-     * @return SerializerInterface
-     */
     protected function createWithConfig(ContainerInterface $container, string $configKey): SerializerInterface
     {
+        /** @var SerializerConfig $config */
         $config = $this->retrieveConfig($container, $configKey, 'serializer');
 
-        if ($config['class'] === HybridSerializer::class) {
-            $dictionary = $config['event_type_map'] ?: [];
-
-            $jsonSerializer = new JsonSerializer();
-
-            return new $config['class'](
-                $jsonSerializer,
-                $dictionary
+        if ($config['class'] === SymfonySerializer::class) {
+            $instance = $this->retrieveService(
+                $container,
+                $config,
+                'instance',
+                SymfonySerializerInterface::class
             );
+
+            $format = $config['format'] ?? 'json';
+            $context = $config['context'] ?? [];
+
+            return new SymfonySerializer($instance, $format, $context);
         }
 
-        return new $config['class'](
-            is_string($config['instance'])
-                ? $container->get($config['instance'])
-                : $config['instance']
-        );
+        return new $config['class'];
     }
 
     /**
-     * {@inheritdoc}
+     * @phpstan-return SerializerConfig
      */
     protected function getDefaultConfig(): array
     {
         return [
-            'class' => JsonSerializer::class,
-            'instance' => null,
+            'class' => SymfonySerializer::class,
+            'instance' => SymfonySerializerInterface::class,
         ];
     }
 }

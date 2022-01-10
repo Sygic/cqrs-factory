@@ -3,20 +3,30 @@
 namespace CQRSFactory;
 
 use CQRS\EventStore\ChainingEventStore;
+use CQRS\EventStore\EventFilterInterface;
 use CQRS\EventStore\EventStoreInterface;
 use CQRS\EventStore\FilteringEventStore;
 use CQRS\EventStore\MemoryEventStore;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @phpstan-type EventStoreConfig array{
+ *     class: class-string<EventStoreInterface>,
+ *     event_store: string,
+ *     event_stores: array<string>,
+ *     event_filter: string,
+ *     serializer: string,
+ *     connection: class-string|object|null,
+ *     namespace: ?string,
+ *     size: ?int
+ * }
+ * @phpstan-extends AbstractFactory<EventStoreInterface>
+ */
 class EventStoreFactory extends AbstractFactory
 {
-    /**
-     * @param ContainerInterface $container
-     * @param string $configKey
-     * @return EventStoreInterface
-     */
     protected function createWithConfig(ContainerInterface $container, string $configKey): EventStoreInterface
     {
+        /** @var EventStoreConfig $config */
         $config = $this->retrieveConfig($container, $configKey, 'event_store');
 
         switch ($config['class']) {
@@ -40,11 +50,22 @@ class EventStoreFactory extends AbstractFactory
                     static::class
                 );
 
-                $eventFilter = $container->get($config['event_filter']);
+                $eventFilter = $this->retrieveService(
+                    $container,
+                    $config,
+                    'event_filter',
+                    EventFilterInterface::class
+                );
+
                 return new FilteringEventStore($eventStore, $eventFilter);
 
             case MemoryEventStore::class:
                 return new MemoryEventStore();
+        }
+
+        $connection = $config['connection'];
+        if (is_string($connection)) {
+            $connection = $container->get($connection);
         }
 
         return new $config['class'](
@@ -54,16 +75,14 @@ class EventStoreFactory extends AbstractFactory
                 'serializer',
                 SerializerFactory::class
             ),
-            is_string($config['connection'])
-                ? $container->get($config['connection'])
-                : $config['connection'],
+            $connection,
             $config['namespace'],
             $config['size']
         );
     }
 
     /**
-     * {@inheritdoc}
+     * @return EventStoreConfig
      */
     protected function getDefaultConfig(): array
     {
