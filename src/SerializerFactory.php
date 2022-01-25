@@ -6,6 +6,7 @@ use CQRS\Serializer\SerializerInterface;
 use CQRS\Serializer\SymfonySerializer;
 use CQRSFactory\Exception\DomainException;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 
 /**
@@ -49,6 +50,9 @@ class SerializerFactory extends AbstractFactory
         return [
             'class' => SymfonySerializer::class,
             'instance' => SymfonySerializerInterface::class,
+            'context' => [
+                AbstractObjectNormalizer::PRESERVE_EMPTY_OBJECTS => true,
+            ],
         ];
     }
 }
