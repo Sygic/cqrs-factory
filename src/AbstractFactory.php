@@ -13,7 +13,7 @@ abstract class AbstractFactory
 {
     /** @internal */
     final public function __construct(
-        private string $configKey = 'cqrs_default'
+        private readonly string $configKey = 'cqrs_default'
     ) {
     }
 

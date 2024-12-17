@@ -7,7 +7,7 @@ use Rector\Config\RectorConfig;
 use Rector\Privatization;
 
 return RectorConfig::configure()
-    ->withPhpSets(php82: true)
+    ->withPhpSets(php83: true)
     ->withPaths([
         __DIR__ . '/src',
     ]);

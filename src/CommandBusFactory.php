@@ -20,6 +20,7 @@ use Psr\Container\ContainerInterface;
  */
 class CommandBusFactory extends AbstractFactory
 {
+    #[\Override]
     protected function createWithConfig(ContainerInterface $container, string $configKey): CommandBusInterface
     {
         /** @var CommandBusConfig $config */
@@ -52,6 +53,7 @@ class CommandBusFactory extends AbstractFactory
     /**
      * @phpstan-return CommandBusConfig
      */
+    #[\Override]
     protected function getDefaultConfig(): array
     {
         return [

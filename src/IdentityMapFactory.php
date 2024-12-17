@@ -14,6 +14,7 @@ use Psr\Container\ContainerInterface;
  */
 class IdentityMapFactory extends AbstractFactory
 {
+    #[\Override]
     protected function createWithConfig(ContainerInterface $container, string $configKey): IdentityMapInterface
     {
         /** @var IdentityMapConfig $config */
@@ -39,6 +40,7 @@ class IdentityMapFactory extends AbstractFactory
     /**
      * @return IdentityMapConfig
      */
+    #[\Override]
     protected function getDefaultConfig(): array
     {
         return [
