@@ -1,6 +1,7 @@
 {
     "name": "pauci/cqrs-factory",
     "description": "CQRS factories for PSR-11",
+    "version": "0.7.0",
     "type": "library",
     "license": "MIT",
     "config": {
