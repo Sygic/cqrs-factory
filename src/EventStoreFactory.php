@@ -24,6 +24,7 @@ use Psr\Container\ContainerInterface;
  */
 class EventStoreFactory extends AbstractFactory
 {
+    #[\Override]
     protected function createWithConfig(ContainerInterface $container, string $configKey): EventStoreInterface
     {
         /** @var EventStoreConfig $config */
@@ -84,6 +85,7 @@ class EventStoreFactory extends AbstractFactory
     /**
      * @return EventStoreConfig
      */
+    #[\Override]
     protected function getDefaultConfig(): array
     {
         return [

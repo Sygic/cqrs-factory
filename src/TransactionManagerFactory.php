@@ -18,6 +18,7 @@ use Psr\Container\ContainerInterface;
  */
 class TransactionManagerFactory extends AbstractFactory
 {
+    #[\Override]
     public function createWithConfig(ContainerInterface $container, string $configKey): TransactionManagerInterface
     {
         /** @phpstan-var TransactionManagerConfig $config */
@@ -51,6 +52,7 @@ class TransactionManagerFactory extends AbstractFactory
     /**
      * @phpstan-return TransactionManagerConfig
      */
+    #[\Override]
     protected function getDefaultConfig(): array
     {
         return [

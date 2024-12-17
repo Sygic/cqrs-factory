@@ -20,6 +20,7 @@ use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterfa
  */
 class SerializerFactory extends AbstractFactory
 {
+    #[\Override]
     protected function createWithConfig(ContainerInterface $container, string $configKey): SerializerInterface
     {
         /** @var SerializerConfig $config */
@@ -45,6 +46,7 @@ class SerializerFactory extends AbstractFactory
     /**
      * @phpstan-return SerializerConfig
      */
+    #[\Override]
     protected function getDefaultConfig(): array
     {
         return [

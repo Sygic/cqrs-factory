@@ -16,6 +16,7 @@ use Psr\Container\ContainerInterface;
  */
 class EventBusFactory extends AbstractFactory
 {
+    #[\Override]
     protected function createWithConfig(ContainerInterface $container, string $configKey): EventBusInterface
     {
         /** @var EventBusConfig $config */
@@ -36,6 +37,7 @@ class EventBusFactory extends AbstractFactory
     /**
      * @phpstan-return EventBusConfig
      */
+    #[\Override]
     protected function getDefaultConfig(): array
     {
         return [

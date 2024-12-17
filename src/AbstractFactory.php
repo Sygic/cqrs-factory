@@ -11,12 +11,10 @@ use Psr\Container\ContainerInterface;
  */
 abstract class AbstractFactory
 {
-    private string $configKey;
-
     /** @internal */
-    final public function __construct(string $configKey = 'cqrs_default')
-    {
-        $this->configKey = $configKey;
+    final public function __construct(
+        private readonly string $configKey = 'cqrs_default'
+    ) {
     }
 
     /**

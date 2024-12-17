@@ -21,6 +21,7 @@ use Psr\Container\ContainerInterface;
  */
 class EventPublisherFactory extends AbstractFactory
 {
+    #[\Override]
     public function createWithConfig(ContainerInterface $container, string $configKey): EventPublisherInterface
     {
         /** @var EventPublisherConfig $config */
@@ -65,6 +66,7 @@ class EventPublisherFactory extends AbstractFactory
     /**
      * @phpstan-return EventPublisherConfig
      */
+    #[\Override]
     protected function getDefaultConfig(): array
     {
         return [
