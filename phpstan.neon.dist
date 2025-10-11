@@ -1,6 +1,6 @@
+includes:
+    - phar://phpstan.phar/conf/bleedingEdge.neon
 parameters:
     level: max
-    checkGenericClassInNonGenericObjectType: false
-    checkMissingIterableValueType: false
     paths:
         - src
