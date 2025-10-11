@@ -37,11 +37,17 @@ abstract class AbstractFactory
      * ];
      * </code>
      *
+     * @phpstan-param array<int, mixed> $arguments
      * @phpstan-return T
      * @throws Exception\DomainException
      */
     public static function __callStatic(string $name, array $arguments): object
     {
+        // Disallow calling the static factory on the abstract base class itself.
+        if (static::class === self::class) {
+            throw new Exception\DomainException('Cannot invoke static factory on AbstractFactory directly.');
+        }
+
         if (!array_key_exists(0, $arguments) || !$arguments[0] instanceof ContainerInterface) {
             throw new Exception\InvalidArgumentException(sprintf(
                 'The first argument must be of type %s',
@@ -49,11 +55,13 @@ abstract class AbstractFactory
             ));
         }
 
-        return (new static($name))($arguments[0]);
+        $factoryClass = static::class;
+
+        return (new $factoryClass($name))($arguments[0]);
     }
 
     /**
-     * Creates a new instance from a specified config.
+     * Retrieves the config for a specific section.
      *
      * @phpstan-return T
      */
@@ -73,12 +81,16 @@ abstract class AbstractFactory
      */
     protected function retrieveConfig(ContainerInterface $container, string $configKey, string $section): array
     {
-        /** @var array{cqrs?: array<string, array>} $applicationConfig */
+        /** @var array{cqrs?: array<string, array<string, mixed>>} $applicationConfig */
         $applicationConfig = $container->has('config') ? $container->get('config') : [];
+        /** @var array<string, array<string, mixed>> $sectionConfig */
         $sectionConfig = $applicationConfig['cqrs'][$section] ?? [];
 
         if (array_key_exists($configKey, $sectionConfig)) {
-            return $sectionConfig[$configKey] + $this->getDefaultConfig();
+            /** @var array<string, mixed> $overrides */
+            $overrides = $sectionConfig[$configKey];
+
+            return array_replace($this->getDefaultConfig(), $overrides);
         }
 
         return $this->getDefaultConfig();
@@ -112,6 +124,7 @@ abstract class AbstractFactory
 
     /**
      * @phpstan-template Service of object
+     * @phpstan-param array<string, mixed> $config
      * @phpstan-param class-string<Service> $className
      * @phpstan-return Service
      */

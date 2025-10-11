@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterfa
  *     class: class-string<SerializerInterface>,
  *     instance?: class-string|object,
  *     format?: string,
- *     context?: array
+ *     context?: array<string, mixed>
  * }
  * @phpstan-extends AbstractFactory<SerializerInterface>
  */
@@ -35,6 +35,7 @@ class SerializerFactory extends AbstractFactory
             );
 
             $format = $config['format'] ?? 'json';
+            /** @var array<string, mixed> $context */
             $context = $config['context'] ?? [];
 
             return new SymfonySerializer($instance, $format, $context);
