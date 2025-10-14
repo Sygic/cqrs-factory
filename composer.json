@@ -1,7 +1,7 @@
 {
-    "name": "pauci/cqrs-factory",
+    "name": "sygic/cqrs-factory",
     "description": "CQRS factories for PSR-11",
-    "version": "0.8.1",
+    "version": "0.8.2",
     "type": "library",
     "license": "MIT",
     "config": {
@@ -17,8 +17,8 @@
         }
     ],
     "require": {
-        "php": "^8.3 || ^8.4",
-        "pauci/cqrs": "^0.8.1",
+        "php": "^8.4 || ^8.5",
+        "sygic/cqrs": "^0.8.2",
         "psr/container": "^1.0 || ^2.0"
     },
     "require-dev": {
